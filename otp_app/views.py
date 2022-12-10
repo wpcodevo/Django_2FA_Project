@@ -1,13 +1,15 @@
-from rest_framework.views import APIView
 from rest_framework.response import Response
-from rest_framework import status
+from rest_framework import status, generics
 from django.contrib.auth import authenticate
 from otp_app.serializers import UserSerializer
 from otp_app.models import UserModel
 import pyotp
 
 
-class RegisterView(APIView):
+class RegisterView(generics.GenericAPIView):
+    serializer_class = UserSerializer
+    queryset = UserModel.objects.all()
+
     def post(self, request):
         serializer = UserSerializer(data=request.data)
         if serializer.is_valid():
@@ -17,7 +19,10 @@ class RegisterView(APIView):
             return Response({"status": "fail", "message": serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
 
 
-class LoginView(APIView):
+class LoginView(generics.GenericAPIView):
+    serializer_class = UserSerializer
+    queryset = UserModel.objects.all()
+
     def post(self, request):
         data = request.data
         email = data.get('email')
@@ -35,7 +40,10 @@ class LoginView(APIView):
         return Response({"status": "success", "user": serializer.data})
 
 
-class GenerateOTP(APIView):
+class GenerateOTP(generics.GenericAPIView):
+    serializer_class = UserSerializer
+    queryset = UserModel.objects.all()
+
     def post(self, request):
         data = request.data
         user_id = data.get('user_id', None)
@@ -56,7 +64,10 @@ class GenerateOTP(APIView):
         return Response({'base32': otp_base32, "otpauth_url": otp_auth_url})
 
 
-class VerifyOTP(APIView):
+class VerifyOTP(generics.GenericAPIView):
+    serializer_class = UserSerializer
+    queryset = UserModel.objects.all()
+
     def post(self, request):
         message = "Token is invalid or user doesn't exist"
         data = request.data
@@ -77,7 +88,10 @@ class VerifyOTP(APIView):
         return Response({'otp_verified': True, "user": serializer.data})
 
 
-class ValidateOTP(APIView):
+class ValidateOTP(generics.GenericAPIView):
+    serializer_class = UserSerializer
+    queryset = UserModel.objects.all()
+
     def post(self, request):
         message = "Token is invalid or user doesn't exist"
         data = request.data
@@ -97,7 +111,10 @@ class ValidateOTP(APIView):
         return Response({'otp_valid': True})
 
 
-class DisableOTP(APIView):
+class DisableOTP(generics.GenericAPIView):
+    serializer_class = UserSerializer
+    queryset = UserModel.objects.all()
+
     def post(self, request):
         data = request.data
         user_id = data.get('user_id', None)

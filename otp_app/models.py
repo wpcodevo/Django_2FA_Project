@@ -14,4 +14,4 @@ class UserModel(AbstractUser):
     otp_auth_url = models.CharField(max_length=255, null=True)
 
     USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = ['username']
+    REQUIRED_FIELDS = ['username', 'password', 'name']
