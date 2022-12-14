@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "dc7f96ec-14ab-4bbc-923e-f23a5fccce90",
+		"_postman_id": "1c325031-95c9-4a21-a5eb-39b8f3cc183e",
 		"name": "Two-Factor Auth",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "14791724"
@@ -75,7 +75,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n  \"user_id\": \"39fc8d85-187d-4c50-9646-b3bffaff4ded\",\r\n  \"email\":\"admin@contact.com\"\r\n}",
+					"raw": "{\r\n  \"user_id\": \"39fc8d85-187d-4c50-9646-b3bffaff4ded\",\r\n  \"email\":\"admin@admin.com\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -137,7 +137,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"email\": \"ahorlu@gmail.com\",\r\n    \"name\": \"James\",\r\n    \"password\": \"password123\"\r\n}",
+					"raw": "{\r\n    \"email\": \"admin@admin.com\",\r\n    \"name\": \"Admin\",\r\n    \"password\": \"password123\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -167,7 +167,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"email\": \"admin@contact.com\",\r\n    \"password\": \"password123\"\r\n}",
+					"raw": "{\r\n    \"email\": \"admin@admin.com\",\r\n    \"password\": \"password123\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
