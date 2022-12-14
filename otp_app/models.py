@@ -12,6 +12,7 @@ class UserModel(AbstractUser):
     otp_verified = models.BooleanField(default=False)
     otp_base32 = models.CharField(max_length=255, null=True)
     otp_auth_url = models.CharField(max_length=255, null=True)
+    username = None
 
     USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = ['username', 'password', 'name']
+    REQUIRED_FIELDS = ['password', 'name']

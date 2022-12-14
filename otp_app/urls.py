@@ -1,5 +1,6 @@
 from django.urls import path
-from otp_app.views import RegisterView, LoginView, GenerateOTP, VerifyOTP, ValidateOTP, DisableOTP
+from otp_app.views import (RegisterView, LoginView,
+                           GenerateOTP, VerifyOTP, ValidateOTP, DisableOTP)
 
 urlpatterns = [
     path('register', RegisterView.as_view()),

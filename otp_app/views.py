@@ -11,10 +11,13 @@ class RegisterView(generics.GenericAPIView):
     queryset = UserModel.objects.all()
 
     def post(self, request):
-        serializer = UserSerializer(data=request.data)
+        serializer = self.serializer_class(data=request.data)
         if serializer.is_valid():
-            serializer.save()
-            return Response({"status": "success", 'message': "Registered successfully, please login"}, status=status.HTTP_201_CREATED)
+            try:
+                serializer.save()
+                return Response({"status": "success", 'message': "Registered successfully, please login"}, status=status.HTTP_201_CREATED)
+            except:
+                return Response({"status": "fail", "message": "User with that email already exists"}, status=status.HTTP_409_CONFLICT)
         else:
             return Response({"status": "fail", "message": serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
 
@@ -28,7 +31,7 @@ class LoginView(generics.GenericAPIView):
         email = data.get('email')
         password = data.get('password')
 
-        user = authenticate(username=email, password=password)
+        user = authenticate(username=email.lower(), password=password)
 
         if user is None:
             return Response({"status": "fail", "message": "Incorrect email or password"}, status=status.HTTP_400_BAD_REQUEST)
@@ -36,7 +39,7 @@ class LoginView(generics.GenericAPIView):
         if not user.check_password(password):
             return Response({"status": "fail", "message": "Incorrect email or password"}, status=status.HTTP_400_BAD_REQUEST)
 
-        serializer = UserSerializer(user)
+        serializer = self.serializer_class(user)
         return Response({"status": "success", "user": serializer.data})
 
 
@@ -55,7 +58,7 @@ class GenerateOTP(generics.GenericAPIView):
 
         otp_base32 = pyotp.random_base32()
         otp_auth_url = pyotp.totp.TOTP(otp_base32).provisioning_uri(
-            name=email, issuer_name="codevoweb.com")
+            name=email.lower(), issuer_name="codevoweb.com")
 
         user.otp_auth_url = otp_auth_url
         user.otp_base32 = otp_base32
@@ -83,7 +86,7 @@ class VerifyOTP(generics.GenericAPIView):
         user.otp_enabled = True
         user.otp_verified = True
         user.save()
-        serializer = UserSerializer(user)
+        serializer = self.serializer_class(user)
 
         return Response({'otp_verified': True, "user": serializer.data})
 
@@ -124,7 +127,10 @@ class DisableOTP(generics.GenericAPIView):
             return Response({"status": "fail", "message": f"No user with Id: {user_id} found"}, status=status.HTTP_404_NOT_FOUND)
 
         user.otp_enabled = False
+        user.otp_verified = False
+        user.otp_base32 = None
+        user.otp_auth_url = None
         user.save()
-        serializer = UserSerializer(user)
+        serializer = self.serializer_class(user)
 
         return Response({'otp_disabled': True, 'user': serializer.data})
